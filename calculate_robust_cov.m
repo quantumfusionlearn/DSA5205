@@ -4,7 +4,7 @@ idx_post10 = 253;
 idx_post09 = 232;
 idx_post08 = 209;
 idx_post07 = 189;
-idx = [idx_post07 idx_post08 idx_post09 idx_post10];
+idx = [idx_post10];%[idx_post07 idx_post08 idx_post09 idx_post10];
 month = 7;
 for iiidx = idx
     A = zeros(10,10);
@@ -31,11 +31,15 @@ for iiidx = idx
     
     B = cov(table2array(data(:,i+1:end)), 'omitrows');
     
-    writematrix(covmat,strcat('robust_cov_upto', num2str(month), '.csv'));
+    %writematrix(covmat,strcat('robust_cov_upto', num2str(month), '.csv'));
     month = month+1;
 end
 
 
 names = convertCharsToStrings(data.Properties.VariableNames);
 names = names(2:end);
-heatmap(names,names,cormat)
+ii = ones(size(cormat));
+idx = tril(ii);
+cormat(~idx) = nan;
+heatmap(names,names,cormat, 'MissingDataColor', 'w', 'GridVisible', 'off', 'MissingDataLabel', " ")
+%heatmap(names,names,cormat)
